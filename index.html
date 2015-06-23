@@ -1,29 +1,50 @@
 <!doctype html>
 <html class="no-js" lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        <!-- Place favicon.ico in the root directory -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-    </head>
-    <body>
-        <!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/vendor/handlebars-v3.0.3.js"></script>
+  </head>
+<body>
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
 
-        <!-- Add your site or application content here -->
-        <p>Hello world! This is HTML5 Boilerplate.</p>
+    <div class="search-container">
+      <form>
+        <p>
+          <label for="search-term">Search for any movie</label>
+          <input type="text" name="search-term" id="search-term" value="" placeholder="Toy Story 3" />
+        </p>
+      </form>
+    </div>
 
-        <script src="js/main.js"></script>
+    <div class="results-container">
 
+      <script id="movie-template" type="text/x-handlebars-template">​
+        {{#each movies}}
+        <div class="movie-container">
+          <div class="movie-overview">
+            {{title}}
+          </div>
+          <div class="movie-details">
+          </div>
+        </div>
+        {{/each}}
 
-    </body>
+      ​</script>
+    </div>
+
+    <script src="js/main.js"></script>
+
+  </body>
 </html>
