@@ -97,7 +97,8 @@ var handleSearchResults = function(results) {
 };
 
 var handleSearchInput = function(searchTerm) {
-  updateRoute('/?s=' + searchTerm);
+  var curPath = window.location.pathname;
+  updateRoute(curPath + '?s=' + searchTerm);
   makeSearchRequest(searchTerm);
 };
 
