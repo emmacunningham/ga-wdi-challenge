@@ -22,27 +22,28 @@
     <div class="search-container">
       <form>
         <p>
-          <label for="search-term">Search for any movie</label>
+          <label for="search-term">Search titles: </label>
           <input type="text" name="search-term" id="search-term" value="" placeholder="Toy Story 3" />
         </p>
+        <button id="search-button">Find my movies!</button>
       </form>
     </div>
 
     <div class="results-container">
 
-      <script id="movie-template" type="text/x-handlebars-template">​
-        {{#each movies}}
-        <div class="movie-container">
-          <div class="movie-overview">
-            {{title}}
-          </div>
-          <div class="movie-details">
-          </div>
-        </div>
-        {{/each}}
-
-      ​</script>
     </div>
+
+    <script id="movie-template" type="text/x-handlebars-template">​
+      {{#each Search}}
+      <div class="movie-container">
+        <div class="movie-overview">
+          {{Title}}
+        </div>
+        <div class="movie-details">
+        </div>
+      </div>
+      {{/each}}
+    ​</script>
 
     <script src="js/main.js"></script>
 

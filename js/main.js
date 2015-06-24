@@ -1,4 +1,4 @@
-
+var RESULTS_CONTAINER = 'results-container';
 
 var getElementById = function(id) {
   return document.getElementById(id);
@@ -8,39 +8,57 @@ var getElementBySelector = function(selector) {
   return document.querySelector(selector);
 }
 
+var makeAjaxRequest = function(url, params) {
+  var request = new XMLHttpRequest();
+  request.open('GET', url, true);
+
+  request.onload = params['onload'] || function() {};
+
+  request.onerror = params['onerror'] || function() {};
+
+  request.send();
+};
+
 var makeSearchRequest = function(searchTerm) {
 
-  var request = new XMLHttpRequest();
-  request.open('GET', 'http://www.omdbapi.com/?s=' + searchTerm, true);
 
-  request.onload = function() {
+  var url = 'http://www.omdbapi.com/?s=' + searchTerm;
+  var onLoad = function() {
     if (this.status >= 200 && this.status < 400) {
       // Success!
       var resp = this.response;
-      console.log(JSON.parse(resp));
+      handleSearchResults(JSON.parse(resp));
+
     } else {
       // We reached our target server, but it returned an error
 
     }
   };
 
-  request.onerror = function() {
-    // There was a connection error of some sort
+  var callbacks = {
+    'onload': onLoad
   };
 
-  request.send();
-
+  makeAjaxRequest(url, callbacks);
 
 };
 
+var handleSearchResults = function(results) {
+  renderMovies(results);
+};
 
-makeSearchRequest('samurai');
+var handleSearchInput = function(searchTerm) {
+  makeSearchRequest(searchTerm);
+};
 
-var renderResults = function() {
-  var data = {movies: [{title: 'poop'}, {title: 'double-poop'}]};
+var renderMovies = function(data) {
   var templateScript = getElementById('movie-template').innerHTML;
   var template = Handlebars.compile(templateScript);
-  getElementBySelector('body').innerHTML += template(data);
+  getElementBySelector('.results-container').innerHTML = template(data);
 }
 
+getElementById('search-term').addEventListener('input', function(e) {
+  var searchTerm = encodeURIComponent(getElementById('search-term').value);
+  handleSearchInput(searchTerm);
+});
 
