@@ -38,13 +38,16 @@
     </div>
 
     <script id="movie-template" type="text/x-handlebars-template">​
-      {{#each Search}}
-      <div class="movie-container btn paper-raise" data-movieId="{{ imdbID }}">
-        <div class="movie-overview">
-          <p>{{ Title }} ({{ Year }})</p>
+      <h3>Results:</h3>
+      <div id="movies-container">
+        {{#each Search}}
+        <div class="movie-container btn paper-raise" data-movieId="{{ imdbID }}">
+          <div class="movie-overview">
+            <p>{{ Title }} ({{ Year }})</p>
+          </div>
         </div>
+        {{/each}}
       </div>
-      {{/each}}
     ​</script>
 
     <script id="movie-details-template" type="text/x-handlebars-template">​

@@ -17,6 +17,10 @@ h2 {
   -webkit-margin-before: 0;
 }
 
+h3 {
+  text-align: center;
+}
+
 .btn {
   position: relative;
   display: block;
@@ -78,7 +82,7 @@ h2 {
   text-align: center;
 }
 
-#results-container {
+#movies-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

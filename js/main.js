@@ -28,45 +28,6 @@ var removeClass = function(el, className) {
         className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 };
 
-var clearSearch = function() {
-  getElementById(SEARCH_TERM_CONTAINER).value = '';
-  getElementById(RESULTS_CONTAINER).innerHTML = '';
-};
-
-var updateRoute = function(slug) {
-
-  // Checks if HTML5 History is supported
-  if (window.history && window.history.pushState) {
-    window.history.pushState(null, null, slug);
-  }
-
-};
-
-var handleRoute = function() {
-  var params = window.location.search;
-  if (!!params) {
-    console.log(params);
-  }
-  else {
-    clearSearch();
-  }
-};
-
-// Initializes router and sets up popstate listener
-var initRouter = function() {
-  if (window.history && window.history.pushState) {
-    handleRoute();
-    window.addEventListener("popstate", function(e) {
-      handleRoute();
-    });
-  }
-  else {
-    window.location = '/';
-  }
-}
-
-initRouter();
-
 var makeAjaxRequest = function(url, params) {
   var request = new XMLHttpRequest();
   request.open('GET', url, true);
@@ -83,13 +44,9 @@ var makeSearchRequest = function(searchTerm) {
   var url = 'http://www.omdbapi.com/?s=' + searchTerm;
   var onLoad = function() {
     if (this.status >= 200 && this.status < 400) {
-      // Success!
       var resp = this.response;
       handleSearchResults(JSON.parse(resp));
-
     } else {
-      // We reached our target server, but it returned an error
-
     }
   };
 
@@ -106,13 +63,10 @@ var makeMovieRequest = function(id) {
   var url = 'http://www.omdbapi.com/?i=' + id + '&plot=full&r=json';
   var onLoad = function() {
     if (this.status >= 200 && this.status < 400) {
-      // Success!
       var resp = this.response;
       handleMovieResults(JSON.parse(resp));
 
     } else {
-      // We reached our target server, but it returned an error
-
     }
   };
 
@@ -137,9 +91,18 @@ var handleMovieResults = function(data) {
   renderMovieDetails(data);
 };
 
-var handleSearchError = function(searchTerm) {
+var handleSearchError = function() {
   getElementById(RESULTS_CONTAINER).innerHTML =
       'Sorry, there was an error with the request. Try again?';
+};
+
+var clearDetails = function() {
+  removeClass(document.querySelector('html'), 'details-active');
+};
+
+var clearSearch = function() {
+  getElementById(SEARCH_TERM_CONTAINER).value = '';
+  getElementById(RESULTS_CONTAINER).innerHTML = '';
 };
 
 var renderMovieDetails = function(data) {
@@ -167,7 +130,7 @@ var renderMovies = function(data) {
     movieContainers[i].addEventListener('click', function(e) {
       var id = this.getAttribute('data-movieId');
       var curPath = window.location.search;
-      updateRoute(curPath + '&id=' + id);
+      updateRoute(curPath.split('/')[0] + '&id=' + id);
       makeMovieRequest(id);
     });
   }
@@ -187,3 +150,64 @@ getElementById('search-form').addEventListener('keypress', function(e) {
   }
 });
 
+var searchParameters = function(val) {
+  var result,
+      tmp = [];
+  window.location.search
+      .substr(1)
+          .split('&')
+          .forEach(function (item) {
+          tmp = item.split('=');
+          if (tmp[0] === val) result = tmp[1].split('/')[0];
+      });
+  return result;
+};
+
+var updateRoute = function(slug) {
+
+  // Checks if HTML5 History is supported
+  if (window.history && window.history.pushState) {
+    window.history.pushState(null, null, slug);
+  }
+
+};
+
+var handleRoute = function() {
+  var params = window.location.search;
+  if (!!params) {
+    var searchTerm = searchParameters('s');
+    var id = searchParameters('id');
+    if (!!id && !!searchTerm) {
+      makeMovieRequest(id);
+      makeSearchRequest(searchTerm);
+      getElementById(SEARCH_TERM_CONTAINER).value = decodeURIComponent(searchTerm);
+    }
+    else if (!!searchTerm) {
+      clearDetails();
+      makeSearchRequest(searchTerm);
+      getElementById(SEARCH_TERM_CONTAINER).value = decodeURIComponent(searchTerm);
+    }
+    else if (!!id) {
+      makeMovieRequest(id);
+    }
+  }
+  else {
+    clearSearch();
+  }
+};
+
+// Initializes router and sets up popstate listener
+var initRouter = function() {
+  if (window.history && window.history.pushState) {
+    handleRoute();
+    window.addEventListener("popstate", function(e) {
+      handleRoute();
+    });
+  }
+  else {
+    window.location = '/';
+    clearSearch();
+  }
+}
+
+initRouter();
