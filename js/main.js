@@ -52,7 +52,7 @@ var makeAjaxRequest = function(url, params) {
 };
 
 var makeSearchRequest = function(searchTerm) {
-  triggerEvent(window, 'startLoading', {});
+  triggerEvent(window, 'loadStart', {});
 
   var url = 'http://www.omdbapi.com/?s=' + searchTerm;
   var onLoad = function() {
@@ -73,14 +73,13 @@ var makeSearchRequest = function(searchTerm) {
 };
 
 var makeMovieRequest = function(id) {
-  triggerEvent(window, 'startLoading', {});
+  triggerEvent(window, 'loadStart', {});
 
   var url = 'http://www.omdbapi.com/?i=' + id + '&plot=full&r=json';
   var onLoad = function() {
     if (this.status >= 200 && this.status < 400) {
       var resp = this.response;
       handleMovieResults(JSON.parse(resp));
-
     } else {
     }
   };
@@ -125,7 +124,6 @@ var renderMovieDetails = function(data) {
   var templateScript = getElementById('movie-details-template').innerHTML;
   var template = Handlebars.compile(templateScript);
   getElementById(DETAILS_CONTAINER).innerHTML = template(data);
-  triggerEvent(window, 'stopLoading', {});
 
   addClass(document.querySelector('html'), 'details-active');
   getElementById('overlay-close').addEventListener('click', function(e) {
@@ -139,7 +137,6 @@ var renderMovies = function(data) {
   var templateScript = getElementById('movie-template').innerHTML;
   var template = Handlebars.compile(templateScript);
   getElementById(RESULTS_CONTAINER).innerHTML = template(data);
-  triggerEvent(window, 'stopLoading', {});
 
   // Attach click listeners to all new movie containers.
   var movieContainers = document.querySelectorAll('.movie-container');
@@ -167,8 +164,8 @@ getElementById('search-form').addEventListener('keypress', function(e) {
   }
 });
 
-window.addEventListener('startLoading', function(e) {
-  console.log('loading');
+window.addEventListener('loadStart', function(e) {
+  getElementById(RESULTS_CONTAINER).innerHTML = '<div class="loading"></div>';
 });
 
 var searchParameters = function(val) {

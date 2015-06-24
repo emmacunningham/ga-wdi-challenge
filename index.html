@@ -40,13 +40,17 @@
     <script id="movie-template" type="text/x-handlebars-template">​
       <h3>Results:</h3>
       <div id="movies-container">
-        {{#each Search}}
-        <div class="movie-container btn paper-raise" data-movieId="{{ imdbID }}">
-          <div class="movie-overview">
-            <p>{{ Title }} ({{ Year }})</p>
+        {{#if Search}}
+          {{#each Search}}
+          <div class="movie-container btn paper-raise" data-movieId="{{ imdbID }}">
+            <div class="movie-overview">
+              <p>{{ Title }} ({{ Year }})</p>
+            </div>
           </div>
-        </div>
-        {{/each}}
+          {{/each}}
+        {{else}}
+          <p>Sorry, there were no results matching your search, please try again.</p>
+        {{/if}}
       </div>
     ​</script>
 
