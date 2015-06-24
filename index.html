@@ -18,18 +18,20 @@
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div id="search-container">
-      <form id="search-form">
-        <p>
-          <label for="search-term">Search titles: </label>
-          <input type="text" name="search-term" id="search-term" value="" placeholder="Toy Story 3" />
-        </p>
-        <a id="search-button" class="btn paper-raise">Find my movies!</a>
-      </form>
-    </div>
+    <div id="content-container">
+      <div id="search-container">
+        <form id="search-form">
+          <p>
+            <label for="search-term">Search titles: </label>
+            <input type="text" name="search-term" id="search-term" value="" placeholder="Toy Story 3" />
+          </p>
+          <a id="search-button" class="btn paper-raise">Find my movies!</a>
+        </form>
+      </div>
 
-    <div id="results-container">
+      <div id="results-container">
 
+      </div>
     </div>
 
     <div id="details-container">
@@ -46,18 +48,21 @@
     ​</script>
 
     <script id="movie-details-template" type="text/x-handlebars-template">​
-      <img src="{{ Poster }}" alt={{ Title }}/>
-      <h2>Title: {{ Title }}</h2>
-      <p>Rated: {{ Rated }}</p>
-      <p>Plot: {{ Plot }}</p>
-      <p>Released: {{ Released }}</p>
-      <p>Runtime: {{ Runtime }}</p>
-      <p>Genre: {{ Genre }}</p>
-      <p>Director: {{ Director }}</p>
-      <p>Writer: {{ Writer }}</p>
-      <p>Language: {{ Language }}</p>
-      <p>Awards: {{ Awards }}</p>
-      <p>IMDb Rating: {{ imdbRating }}</p>
+      <div id="overlay-close">&#10006;</div>
+      <img class="movie-details-image" src="{{ Poster }}" alt={{ Title }}/>
+      <div class="movie-details-text">
+        <h2>Title: {{ Title }}</h2>
+        <p>Rated: {{ Rated }}</p>
+        <p>Plot: {{ Plot }}</p>
+        <p>Released: {{ Released }}</p>
+        <p>Runtime: {{ Runtime }}</p>
+        <p>Genre: {{ Genre }}</p>
+        <p>Director: {{ Director }}</p>
+        <p>Writer: {{ Writer }}</p>
+        <p>Language: {{ Language }}</p>
+        <p>Awards: {{ Awards }}</p>
+        <p>IMDb Rating: {{ imdbRating }}</p>
+      </div>
     ​</script>
 
     <script src="js/main.js"></script>

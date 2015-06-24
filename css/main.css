@@ -4,12 +4,17 @@ body {
   font-family: 'Bitter', serif;
 }
 
-body.details-active {
+.details-active body {
   height: 100%;
 }
 
 html.details-active {
   height: 100%;
+  overflow: scroll;
+}
+
+h2 {
+  -webkit-margin-before: 0;
 }
 
 .btn {
@@ -62,6 +67,13 @@ html.details-active {
   box-shadow: 0 15px 10px -10px rgba(31, 31, 31, 0.5);
 }
 
+#search-term {
+  font-family: "Bitter";
+  height: 40px;
+  font-size: 20px;
+  padding: 0 10px;
+}
+
 #search-container {
   text-align: center;
 }
@@ -84,4 +96,35 @@ html.details-active {
 
 .movie-container:hover {
   background: #DCE9FC;
+}
+
+#details-container {
+  padding: 60px;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background-color: rgba(255,255,255,0.9);
+  display: none;
+}
+
+.details-active #details-container {
+  display: block;
+}
+
+.movie-details-image {
+  width: 33%;
+  float: left;
+}
+
+.movie-details-text {
+  width: 60%;
+  float: right;
+}
+
+#overlay-close {
+  font-size: 40px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
 }

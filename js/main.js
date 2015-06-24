@@ -96,10 +96,15 @@ var handleSearchError = function(searchTerm) {
 };
 
 var renderMovieDetails = function(data) {
+  getElementById(DETAILS_CONTAINER).innerHTML = '';
   var templateScript = getElementById('movie-details-template').innerHTML;
   var template = Handlebars.compile(templateScript);
   getElementById(DETAILS_CONTAINER).innerHTML = template(data);
 
+  addClass(document.querySelector('html'), 'details-active');
+  getElementById('overlay-close').addEventListener('click', function(e) {
+    removeClass(document.querySelector('html'), 'details-active');
+  });
 };
 
 var renderMovies = function(data) {
@@ -131,7 +136,4 @@ getElementById('search-form').addEventListener('keypress', function(e) {
     handleSearchInput(searchTerm);
   }
 });
-
-
-
 
