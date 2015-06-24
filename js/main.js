@@ -21,6 +21,45 @@ var removeClass = function(el, className) {
         className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 };
 
+var clearSearch = function() {
+  getElementById(SEARCH_TERM_CONTAINER).value = '';
+  getElementById(RESULTS_CONTAINER).innerHTML = '';
+};
+
+var updateRoute = function(slug) {
+
+  // Checks if HTML5 History is supported
+  if (window.history && window.history.pushState) {
+    window.history.pushState(null, null, slug);
+  }
+
+};
+
+var handleRoute = function() {
+  var params = window.location.search;
+  if (!!params) {
+    console.log(params);
+  }
+  else {
+    clearSearch();
+  }
+};
+
+// Initializes router and sets up popstate listener
+var initRouter = function() {
+  if (window.history && window.history.pushState) {
+    handleRoute();
+    window.addEventListener("popstate", function(e) {
+      handleRoute();
+    });
+  }
+  else {
+    window.location = '/';
+  }
+}
+
+initRouter();
+
 var makeAjaxRequest = function(url, params) {
   var request = new XMLHttpRequest();
   request.open('GET', url, true);
@@ -83,6 +122,7 @@ var handleSearchResults = function(results) {
 };
 
 var handleSearchInput = function(searchTerm) {
+  updateRoute('/?s=' + searchTerm);
   makeSearchRequest(searchTerm);
 };
 
@@ -117,10 +157,10 @@ var renderMovies = function(data) {
   for (var i = 0, l = movieContainers.length; i < l; i++) {
     movieContainers[i].addEventListener('click', function(e) {
       var id = this.getAttribute('data-movieId');
+      updateRoute('#details');
       makeMovieRequest(id);
     });
   }
-
 }
 
 getElementById('search-button').addEventListener('click', function(e) {
