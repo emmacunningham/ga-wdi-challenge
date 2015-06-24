@@ -2,6 +2,13 @@ var RESULTS_CONTAINER = 'results-container';
 var SEARCH_TERM_CONTAINER = 'search-term';
 var DETAILS_CONTAINER = 'details-container';
 
+Handlebars.registerHelper('ifNotEq', function(term1, term2, options) {
+  if (term1 != term2) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});
+
 var getElementById = function(id) {
   return document.getElementById(id);
 };
@@ -144,6 +151,8 @@ var renderMovieDetails = function(data) {
   addClass(document.querySelector('html'), 'details-active');
   getElementById('overlay-close').addEventListener('click', function(e) {
     removeClass(document.querySelector('html'), 'details-active');
+    var curPath = window.location.search;
+    updateRoute(curPath.split('&id')[0]);
   });
 };
 
@@ -157,7 +166,8 @@ var renderMovies = function(data) {
   for (var i = 0, l = movieContainers.length; i < l; i++) {
     movieContainers[i].addEventListener('click', function(e) {
       var id = this.getAttribute('data-movieId');
-      updateRoute('#details');
+      var curPath = window.location.search;
+      updateRoute(curPath + '&id=' + id);
       makeMovieRequest(id);
     });
   }
