@@ -134,3 +134,15 @@ h3 {
   right: 20px;
   cursor: pointer;
 }
+
+@media (max-width: 480px) {
+  .movie-details-image {
+    width: 100%;
+    float: none;
+  }
+
+  .movie-details-text {
+    width: 100%;
+    float: none;
+  }
+}

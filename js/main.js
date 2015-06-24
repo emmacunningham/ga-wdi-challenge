@@ -28,6 +28,18 @@ var removeClass = function(el, className) {
         className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 };
 
+var triggerEvent = function(el, name, params) {
+
+  if (window.CustomEvent) {
+    var event = new CustomEvent(name, params);
+  } else {
+    var event = document.createEvent('CustomEvent');
+    event.initCustomEvent(name, true, true, params);
+  }
+
+  el.dispatchEvent(event);
+}
+
 var makeAjaxRequest = function(url, params) {
   var request = new XMLHttpRequest();
   request.open('GET', url, true);
@@ -40,6 +52,7 @@ var makeAjaxRequest = function(url, params) {
 };
 
 var makeSearchRequest = function(searchTerm) {
+  triggerEvent(window, 'startLoading', {});
 
   var url = 'http://www.omdbapi.com/?s=' + searchTerm;
   var onLoad = function() {
@@ -47,6 +60,7 @@ var makeSearchRequest = function(searchTerm) {
       var resp = this.response;
       handleSearchResults(JSON.parse(resp));
     } else {
+      handleSearchError();
     }
   };
 
@@ -59,6 +73,7 @@ var makeSearchRequest = function(searchTerm) {
 };
 
 var makeMovieRequest = function(id) {
+  triggerEvent(window, 'startLoading', {});
 
   var url = 'http://www.omdbapi.com/?i=' + id + '&plot=full&r=json';
   var onLoad = function() {
@@ -110,6 +125,7 @@ var renderMovieDetails = function(data) {
   var templateScript = getElementById('movie-details-template').innerHTML;
   var template = Handlebars.compile(templateScript);
   getElementById(DETAILS_CONTAINER).innerHTML = template(data);
+  triggerEvent(window, 'stopLoading', {});
 
   addClass(document.querySelector('html'), 'details-active');
   getElementById('overlay-close').addEventListener('click', function(e) {
@@ -123,6 +139,7 @@ var renderMovies = function(data) {
   var templateScript = getElementById('movie-template').innerHTML;
   var template = Handlebars.compile(templateScript);
   getElementById(RESULTS_CONTAINER).innerHTML = template(data);
+  triggerEvent(window, 'stopLoading', {});
 
   // Attach click listeners to all new movie containers.
   var movieContainers = document.querySelectorAll('.movie-container');
@@ -148,6 +165,10 @@ getElementById('search-form').addEventListener('keypress', function(e) {
     var searchTerm = encodeURIComponent(getElementById(SEARCH_TERM_CONTAINER).value);
     handleSearchInput(searchTerm);
   }
+});
+
+window.addEventListener('startLoading', function(e) {
+  console.log('loading');
 });
 
 var searchParameters = function(val) {
