@@ -84,8 +84,12 @@ h3 {
 
 #movies-container {
   display: flex;
+  display: -webkit-flex;
   flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
   justify-content: center;
+  -webkitjustify-content: center;
+
 }
 
 .movie-container {
