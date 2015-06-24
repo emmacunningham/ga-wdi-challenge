@@ -82,6 +82,10 @@ h3 {
   text-align: center;
 }
 
+.details-active #results-container {
+  display: none;
+}
+
 #movies-container {
   display: flex;
   display: -webkit-flex;
