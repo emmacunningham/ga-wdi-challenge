@@ -28,7 +28,7 @@ var removeClass = function(el, className) {
         className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 };
 
-var triggerEvent = function(el, name, params) {
+var triggerEvent = function(el, name, params, identifier) {
 
   if (window.CustomEvent) {
     var event = new CustomEvent(name, params);
@@ -36,7 +36,7 @@ var triggerEvent = function(el, name, params) {
     var event = document.createEvent('CustomEvent');
     event.initCustomEvent(name, true, true, params);
   }
-
+  event.name = identifier;
   el.dispatchEvent(event);
 }
 
@@ -52,7 +52,7 @@ var makeAjaxRequest = function(url, params) {
 };
 
 var makeSearchRequest = function(searchTerm) {
-  triggerEvent(window, 'loadStart', {});
+  triggerEvent(window, 'loadStart', {}, 'searchRequest');
 
   var url = 'http://www.omdbapi.com/?s=' + searchTerm;
   var onLoad = function() {
@@ -73,7 +73,7 @@ var makeSearchRequest = function(searchTerm) {
 };
 
 var makeMovieRequest = function(id) {
-  triggerEvent(window, 'loadStart', {});
+  triggerEvent(window, 'loadStart', {}, 'movieRequest');
 
   var url = 'http://www.omdbapi.com/?i=' + id + '&plot=full&r=json';
   var onLoad = function() {
@@ -166,7 +166,13 @@ getElementById('search-form').addEventListener('keypress', function(e) {
 });
 
 window.addEventListener('loadStart', function(e) {
-  getElementById(RESULTS_CONTAINER).innerHTML = '<div class="loading"></div>';
+  console.log(e);
+  if (e.name == 'searchRequest') {
+    getElementById(RESULTS_CONTAINER).innerHTML = '<div class="loading"></div>';
+  }
+  else if (e.name == 'movieRequest') {
+    getElementById(DETAILS_CONTAINER).innerHTML = '<div class="loading"></div>';
+  }
 });
 
 var searchParameters = function(val) {
@@ -229,4 +235,6 @@ var initRouter = function() {
   }
 }
 
-initRouter();
+window.onload = function() {
+  initRouter();
+};
