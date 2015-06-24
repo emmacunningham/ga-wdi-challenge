@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
+    <title>Movie Search for fun and profit</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -19,12 +19,12 @@
     <![endif]-->
 
     <div id="search-container">
-      <form>
+      <form id="search-form">
         <p>
           <label for="search-term">Search titles: </label>
           <input type="text" name="search-term" id="search-term" value="" placeholder="Toy Story 3" />
         </p>
-        <button id="search-button">Find my movies!</button>
+        <a id="search-button" class="btn paper-raise">Find my movies!</a>
       </form>
     </div>
 
@@ -37,7 +37,7 @@
 
     <script id="movie-template" type="text/x-handlebars-template">​
       {{#each Search}}
-      <div class="movie-container" data-movieId="{{ imdbID }}">
+      <div class="movie-container btn paper-raise" data-movieId="{{ imdbID }}">
         <div class="movie-overview">
           <p>{{ Title }} ({{ Year }})</p>
         </div>

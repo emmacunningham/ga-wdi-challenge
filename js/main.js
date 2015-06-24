@@ -6,6 +6,21 @@ var getElementById = function(id) {
   return document.getElementById(id);
 };
 
+var addClass = function(el, className) {
+  if (el.classList)
+    el.classList.add(className);
+  else
+    el.className += ' ' + className;
+};
+
+var removeClass = function(el, className) {
+  if (el.classList)
+    el.classList.remove(className);
+  else
+    el.className = el.className.replace(new RegExp('(^|\\b)' +
+        className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+};
+
 var makeAjaxRequest = function(url, params) {
   var request = new XMLHttpRequest();
   request.open('GET', url, true);
@@ -18,7 +33,6 @@ var makeAjaxRequest = function(url, params) {
 };
 
 var makeSearchRequest = function(searchTerm) {
-
 
   var url = 'http://www.omdbapi.com/?s=' + searchTerm;
   var onLoad = function() {
@@ -69,12 +83,16 @@ var handleSearchResults = function(results) {
 };
 
 var handleSearchInput = function(searchTerm) {
-  SEARCH_RESULTS = [];
   makeSearchRequest(searchTerm);
 };
 
 var handleMovieResults = function(data) {
   renderMovieDetails(data);
+};
+
+var handleSearchError = function(searchTerm) {
+  getElementById(RESULTS_CONTAINER).innerHTML =
+      'Sorry, there was an error with the request. Try again?';
 };
 
 var renderMovieDetails = function(data) {
@@ -89,7 +107,7 @@ var renderMovies = function(data) {
   var template = Handlebars.compile(templateScript);
   getElementById(RESULTS_CONTAINER).innerHTML = template(data);
 
-
+  // Attach click listeners to all new movie containers.
   var movieContainers = document.querySelectorAll('.movie-container');
   for (var i = 0, l = movieContainers.length; i < l; i++) {
     movieContainers[i].addEventListener('click', function(e) {
@@ -104,6 +122,14 @@ getElementById('search-button').addEventListener('click', function(e) {
   e.preventDefault();
   var searchTerm = encodeURIComponent(getElementById(SEARCH_TERM_CONTAINER).value);
   handleSearchInput(searchTerm);
+});
+
+getElementById('search-form').addEventListener('keypress', function(e) {
+  if (e.which == 13) {
+    e.preventDefault();
+    var searchTerm = encodeURIComponent(getElementById(SEARCH_TERM_CONTAINER).value);
+    handleSearchInput(searchTerm);
+  }
 });
 
 
