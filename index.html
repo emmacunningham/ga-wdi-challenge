@@ -10,7 +10,6 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <!-- Place favicon.ico in the root directory -->
 
-    <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
     <script src="js/vendor/handlebars-v3.0.3.js"></script>
   </head>
@@ -19,7 +18,7 @@
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div class="search-container">
+    <div id="search-container">
       <form>
         <p>
           <label for="search-term">Search titles: </label>
@@ -29,20 +28,36 @@
       </form>
     </div>
 
-    <div class="results-container">
+    <div id="results-container">
 
+    </div>
+
+    <div id="details-container">
     </div>
 
     <script id="movie-template" type="text/x-handlebars-template">​
       {{#each Search}}
-      <div class="movie-container">
+      <div class="movie-container" data-movieId="{{ imdbID }}">
         <div class="movie-overview">
-          {{Title}}
-        </div>
-        <div class="movie-details">
+          <p>{{ Title }} ({{ Year }})</p>
         </div>
       </div>
       {{/each}}
+    ​</script>
+
+    <script id="movie-details-template" type="text/x-handlebars-template">​
+      <img src="{{ Poster }}" alt={{ Title }}/>
+      <h2>Title: {{ Title }}</h2>
+      <p>Rated: {{ Rated }}</p>
+      <p>Plot: {{ Plot }}</p>
+      <p>Released: {{ Released }}</p>
+      <p>Runtime: {{ Runtime }}</p>
+      <p>Genre: {{ Genre }}</p>
+      <p>Director: {{ Director }}</p>
+      <p>Writer: {{ Writer }}</p>
+      <p>Language: {{ Language }}</p>
+      <p>Awards: {{ Awards }}</p>
+      <p>IMDb Rating: {{ imdbRating }}</p>
     ​</script>
 
     <script src="js/main.js"></script>
